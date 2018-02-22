@@ -1,7 +1,7 @@
 {
   "name": "twlv-finder-mdns",
   "version": "0.0.1",
-  "description": "",
+  "description": "twlv finder mdns",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
