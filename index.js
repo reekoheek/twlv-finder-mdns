@@ -11,6 +11,7 @@ class MDNSFinder extends EventEmitter {
   constructor (node) {
     super();
 
+    this.name = 'mdns';
     this.node = node;
     this.peers = [];
   }
@@ -67,7 +68,7 @@ class MDNSFinder extends EventEmitter {
     });
   }
 
-  _respond (removed) {
+  _respond (removed = false) {
     let { address, pubKey, urls } = this.node.advertisement;
     let nodeAddress = `${address}.${SERVICE_TYPE}`;
     let urlResponses = urls.map((url, i) => {
