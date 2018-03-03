@@ -1,5 +1,5 @@
-const { Node } = require('node-twlv');
-const TCPListener = require('node-twlv/listeners/tcp');
+const { Node } = require('@twlv/core');
+const TCPListener = require('@twlv/core/listeners/tcp');
 const MDNSFinder = require('../');
 const assert = require('assert');
 
