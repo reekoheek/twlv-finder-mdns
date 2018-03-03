@@ -75,7 +75,7 @@ class MDNSFinder extends EventEmitter {
       return {
         name: `${i}.url.${nodeAddress}`,
         type: 'PTR',
-        ttl: 0,
+        ttl: removed ? 0 : PTR_TTL,
         data: url,
       };
     });
@@ -140,6 +140,10 @@ class MDNSFinder extends EventEmitter {
         let segments = answer.name.replace(`.${SERVICE_TYPE}`, '').split('.');
         let address = segments.pop();
 
+        if (address === this.node.identity.address) {
+          return;
+        }
+
         let peer = this.peers.find(peer => peer.address === address);
         if (!peer) {
           peer = { address, pubKey: '', urls: [] };
@@ -160,12 +164,23 @@ class MDNSFinder extends EventEmitter {
           }
         }
 
+        if (answer.ttl === 0) {
+          peer.removed = true;
+        }
         peer.timestamp = new Date();
         updatedPeers.push(peer);
       });
 
       updatedPeers.forEach(peer => {
-        debounce(peer.address, () => this.emit('peer', peer));
+        debounce(peer.address, () => {
+          if (peer.removed) {
+            let index = this.peers.indexOf(peer);
+            if (index !== -1) {
+              this.peers.splice(index, 1);
+            }
+          }
+          this.emit('peer', peer);
+        });
       });
     } catch (err) {
       console.warn('_onResponse caught error', err);
