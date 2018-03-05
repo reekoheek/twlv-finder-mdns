@@ -20,8 +20,8 @@ describe('MDNSFinder', () => {
       node1.addListener(new TCPListener());
       node2.addListener(new TCPListener());
 
-      node1.addFinder(new MDNSFinder(node1));
-      node2.addFinder(new MDNSFinder(node2));
+      node1.addFinder(new MDNSFinder());
+      node2.addFinder(new MDNSFinder());
 
       try {
         await node1.start();

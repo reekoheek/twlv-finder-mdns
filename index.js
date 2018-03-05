@@ -8,11 +8,10 @@ const QUERY_INTERVAL = 3000;
 const FIND_TIMEOUT = 1000;
 
 class MDNSFinder extends EventEmitter {
-  constructor (node) {
+  constructor () {
     super();
 
     this.name = 'mdns';
-    this.node = node;
     this.peers = [];
   }
 
@@ -36,7 +35,9 @@ class MDNSFinder extends EventEmitter {
     });
   }
 
-  async up () {
+  async up (node) {
+    this.node = node;
+
     this.mdns = multicastdns();
     this.mdns.on('query', this._onQuery.bind(this));
     this.mdns.on('response', this._onResponse.bind(this));
@@ -57,7 +58,9 @@ class MDNSFinder extends EventEmitter {
     this.mdns.removeAllListeners('query');
     this.mdns.removeAllListeners('response');
     this.mdns.destroy();
-    this.mdns = null;
+    this.mdns = undefined;
+
+    this.node = undefined;
 
     this.peers = [];
   }

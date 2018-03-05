@@ -1,6 +1,6 @@
 {
   "name": "@twlv/finder-mdns",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "twlv finder mdns",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "url": "https://github.com/twlv/twlv-finder-mdns.git"
   },
   "devDependencies": {
-    "@twlv/core": "^0.1.0",
+    "@twlv/core": "^0.2.0",
     "babel-eslint": "^8.2.2",
     "eslint": "^4.18.2",
     "eslint-config-standard": "^11.0.0",
