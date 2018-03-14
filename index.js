@@ -1,5 +1,6 @@
 const multicastdns = require('multicast-dns');
 const { EventEmitter } = require('events');
+const debug = require('debug')('twlv:finder-mdns');
 
 const SERVICE_TYPE = '_twlv._tcp.local';
 const PTR_TTL = 4500;
@@ -127,7 +128,7 @@ class MDNSFinder extends EventEmitter {
         }
       });
     } catch (err) {
-      console.warn('_onQuery caught error', err);
+      debug('_onQuery caught %s', err.stack);
     }
   }
 
@@ -186,7 +187,7 @@ class MDNSFinder extends EventEmitter {
         });
       });
     } catch (err) {
-      console.warn('_onResponse caught error', err);
+      debug('_onResponse caught %s', err.stack);
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@twlv/finder-mdns",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "twlv finder mdns",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,7 @@
   "author": "Ganesha <reekoheek@gmail.com> (http://sagara.id)",
   "license": "MIT",
   "dependencies": {
+    "debug": "^3.1.0",
     "multicast-dns": "^7.0.0"
   }
 }
