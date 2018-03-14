@@ -1,11 +1,11 @@
 const { Node } = require('@twlv/core');
-const TCPListener = require('@twlv/core/listeners/tcp');
-const MDNSFinder = require('../');
+const { TcpListener } = require('@twlv/core/transports/tcp');
+const { MDNSFinder } = require('../');
 const assert = require('assert');
 
 describe('MDNSFinder', () => {
   before(() => {
-    process.on('unhandledRejection', err => console.error(err));
+    process.on('unhandledRejection', err => console.error('Unhandled', err));
   });
 
   after(() => {
@@ -17,8 +17,8 @@ describe('MDNSFinder', () => {
       let node1 = new Node();
       let node2 = new Node();
 
-      node1.addListener(new TCPListener());
-      node2.addListener(new TCPListener());
+      node1.addListener(new TcpListener());
+      node2.addListener(new TcpListener());
 
       node1.addFinder(new MDNSFinder());
       node2.addFinder(new MDNSFinder());

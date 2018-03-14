@@ -38,6 +38,7 @@ class MDNSFinder extends EventEmitter {
 
   async up (node) {
     this.node = node;
+    this.serviceType = `${node.networkId}.${SERVICE_TYPE}`;
 
     this.mdns = multicastdns();
     this.mdns.on('query', this._onQuery.bind(this));
@@ -68,13 +69,13 @@ class MDNSFinder extends EventEmitter {
 
   _query () {
     this.mdns.query({
-      questions: [{ name: SERVICE_TYPE, type: 'PTR' }],
+      questions: [{ name: this.serviceType, type: 'PTR' }],
     });
   }
 
   _respond (removed = false) {
     let { address, pubKey, urls } = this.node.advertisement;
-    let nodeAddress = `${address}.${SERVICE_TYPE}`;
+    let nodeAddress = `${address}.${this.serviceType}`;
     let urlResponses = urls.map((url, i) => {
       return {
         name: `${i}.url.${nodeAddress}`,
@@ -90,10 +91,10 @@ class MDNSFinder extends EventEmitter {
         type: 'PTR',
         ttl: removed ? 0 : PTR_TTL,
         class: 'IN',
-        data: SERVICE_TYPE,
+        data: this.serviceType,
       },
       {
-        name: SERVICE_TYPE,
+        name: this.serviceType,
         type: 'PTR',
         ttl: removed ? 0 : PTR_TTL,
         data: nodeAddress,
@@ -122,7 +123,7 @@ class MDNSFinder extends EventEmitter {
   _onQuery (query) {
     try {
       query.questions.find(question => {
-        if (question.type === 'PTR' && question.name === SERVICE_TYPE) {
+        if (question.type === 'PTR' && question.name === this.serviceType) {
           this._respond();
           return true;
         }
@@ -133,15 +134,17 @@ class MDNSFinder extends EventEmitter {
   }
 
   _onResponse (resp) {
+    let { networkId } = this.node;
+
     try {
       let updatedPeers = [];
 
       resp.answers.forEach(answer => {
-        if (!answer.name.endsWith(`.${SERVICE_TYPE}`)) {
+        if (!answer.name.endsWith(`.${this.serviceType}`)) {
           return;
         }
 
-        let segments = answer.name.replace(`.${SERVICE_TYPE}`, '').split('.');
+        let segments = answer.name.replace(`.${this.serviceType}`, '').split('.');
         let address = segments.pop();
 
         if (address === this.node.identity.address) {
@@ -150,7 +153,7 @@ class MDNSFinder extends EventEmitter {
 
         let peer = this.peers.find(peer => peer.address === address);
         if (!peer) {
-          peer = { address, pubKey: '', urls: [] };
+          peer = { networkId: networkId, address, pubKey: '', urls: [] };
           this.peers.push(peer);
         }
 
@@ -204,4 +207,4 @@ function sleep (t = 0) {
   return new Promise(resolve => setTimeout(resolve, t));
 }
 
-module.exports = MDNSFinder;
+module.exports = { MDNSFinder };
