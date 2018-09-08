@@ -1,11 +1,12 @@
 {
   "name": "@twlv/finder-mdns",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "twlv finder mdns",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
     "test": "mocha test/**",
+    "precommit": "npm run lint && npm test",
     "coverage": "nyc --reporter=lcov npm test"
   },
   "repository": {
@@ -13,22 +14,26 @@
     "url": "https://github.com/twlv/twlv-finder-mdns.git"
   },
   "devDependencies": {
-    "@twlv/core": "^0.2.8",
-    "babel-eslint": "^8.2.2",
-    "eslint": "^4.18.2",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-config-xinix": "^1.0.4",
-    "eslint-plugin-import": "^2.9.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "mocha": "^5.0.4",
-    "nyc": "^11.6.0"
+    "@twlv/core": "^1.0.1",
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.5.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-config-xinix": "^1.1.2",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "husky": "^0.14.3",
+    "mocha": "^5.2.0",
+    "nyc": "^13.0.1"
+  },
+  "peerDependencies": {
+    "@twlv/core": "^1.0.1"
   },
   "author": "Ganesha <reekoheek@gmail.com> (http://sagara.id)",
   "license": "MIT",
   "dependencies": {
     "debug": "^3.1.0",
-    "multicast-dns": "^7.0.0"
+    "multicast-dns": "^7.2.0"
   }
 }
